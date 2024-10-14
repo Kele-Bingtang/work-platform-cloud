@@ -1,0 +1,42 @@
+--- # 数据源配置
+spring.datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: ${datasource.notice.url}
+  username: ${datasource.notice.username}
+  password: ${datasource.notice.password}
+  
+# springdoc 配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+  info:
+    title: 消息发送平台
+    description: 消息发送平台
+    version: ${notice.version}
+    
+--- # Actuator 监控端点的配置项
+management:
+  endpoints:
+    logfile:
+      external-file: ./logs/${notice.name}-error.log # Spring Boot Admin 在线查看日志的路径，与 logback-plus.xml 里生成的文件路径一致，这里取得是 error 的日志
+
+--- # 邮件服务
+spring:
+  mail:
+    host: smtp.163.com # 邮件服务器地址
+    protocol: smtp # 协议
+    username: kele_bingtang@163.com # 发送邮件的邮箱也就是你开通服务的邮箱
+    password: GJQDWNWVGYEVTSMB # 开通服务后得到的授权码
+    default-encoding: utf-8 # 邮件内容的编码
+    
+--- # 监控中心配置
+spring.boot.admin.client:
+  # 增加客户端开关
+  enabled: true
+  instance:
+    name: Notice Platform
+    service-host-type: IP

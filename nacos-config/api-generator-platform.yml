@@ -1,0 +1,116 @@
+--- # 数据源配置
+spring.datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: ${datasource.ag.url}
+  username: ${datasource.ag.username}
+  password: ${datasource.ag.password}
+
+jwt:
+  secret-key: ${ag.name}-abcdefghijklmnopqrstuvwxyz
+  expire-time: 43200000 # 12 小时
+  refresh-time: 7200000 # token 过期前多少毫秒刷新 token (2小时)
+
+--- # 监控中心配置
+spring.boot.admin.client:
+  # 增加客户端开关
+  enabled: true
+  instance:
+    name: API Generator
+    service-host-type: IP
+
+# security 配置
+security:
+  enabled: true
+  # 排除路径
+  excludes:
+    # 认证路径
+    - /
+    - /auth/**
+    # 静态资源
+    - /**.html
+    - /**.css
+    - /**.js
+    # 公共路径
+    - /favicon.ico
+    - /error
+    # swagger 文档配置
+    - /*/api-docs
+    - /*/api-docs/**
+    # actuator 监控配置
+    - /actuator
+    - /actuator/**
+    - /ai/**
+    - /generic-api/**
+    - /user/register
+
+--- # Spring Cache
+spring:
+  cache:
+    caffeine:
+      expire: 30s # 秒
+      capacity: 100
+      maximum-size: 1000
+    redis:
+      time-to-live: 2h
+
+# springdoc 配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+  info:
+    title: API 生成器平台
+    description: 根据 SQL 生成增删改查的 API
+    version: ${ag.version}
+
+--- # Actuator 监控端点的配置项
+management:
+  endpoints:
+    logfile:
+      external-file: ./logs/${ag.name}-error.log # Spring Boot Admin 在线查看日志的路径，与 logback-plus.xml 里生成的文件路径一致，这里取得是 error 的日志
+
+# 用户配置
+login:
+  fail:
+    # 密码最大错误次数
+    maxRetryCount: 5
+    # 密码锁定时间（默认10分钟）
+    lockTime: 10
+
+# 全局线程池相关配置
+thread-pool:
+  # 是否开启线程池
+  enabled: false
+  
+# 默认配置
+default:
+  password: 123456 # 新用户的默认密码
+
+# 数据加密
+mybatis-encryptor:
+  # 是否开启加密
+  enable: true
+  # 加密实体类包路径
+  class-package: cn.youngkbt.ag.demo
+
+# api 接口加密
+api-decrypt:
+  # 是否开启全局接口加密
+  enabled: true
+
+--- # websocket
+websocket:
+  # 如果关闭，需要和前端开关一起关闭
+  enabled: true
+  # 路径
+  path: /ag/websocket
+  
+default:
+  password: 123456
+  
+--- # 数据源 DB 初始化加载
+spring.datasource:
+  select-sql: select * from t_data_source where status = 1 and is_deleted = 0

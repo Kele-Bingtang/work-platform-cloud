@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.youngkbt.uac.system.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.youngkbt.uac.system.model.po.SysUser">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="username" column="user_name" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="TINYINT"/>
+        <result property="birthday" column="birthday" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="userStatus" column="user_status" jdbcType="TINYINT"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="registerTime" column="register_time" jdbcType="TIMESTAMP"/>
+        <result property="loginIp" column="login_ip" jdbcType="VARCHAR"/>
+        <result property="loginTime" column="login_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createById" column="create_by_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateById" column="update_by_id" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="tenantId" column="tenant_id" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapVo" type="cn.youngkbt.uac.system.model.vo.SysUserVO">
+        <id property="id" column="id"/>
+        <result property="deptId" column="dept_id"/>
+        <association property="dept" resultMap="deptResult" />
+    </resultMap>
+
+    <resultMap id="deptResult" type="cn.youngkbt.uac.system.model.vo.SysDeptVO">
+        <id property="deptId" column="dept_id"/>
+        <result property="email" column="dept_email"/>
+        <result property="status" column="dept_status"/>
+        <result property="createTime" column="dept_create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,username,
+        nickname,password,email,
+        sex,birthday,phone,
+        user_status,avatar,register_time,
+        login_ip,login_time,create_by,
+        create_by_id,create_time,update_by,
+        update_by_id,update_time,status,
+        is_deleted,tenant_id,dept_id
+    </sql>
+    
+    <select id="selectTenantUserByUsername" resultType="cn.youngkbt.security.domain.SecurityUser"></select>
+    
+    <select id="selectUserByUsername" resultType="cn.youngkbt.security.domain.SecurityUser"></select>
+
+    <select id="queryList" resultType="cn.youngkbt.uac.system.model.vo.SysUserVO">
+        select su.id, su.user_id, su.username, su.nickname, su.email, su.sex, su.birthday, su.phone, su.avatar, su.register_time,
+            su.login_ip, su.login_time, su.user_status, su.status, su.dept_id,
+            sd.dept_name, sd.leader, su1.user_id as leader_name
+        from t_sys_user su
+        left join (select * from t_sys_dept where is_deleted = 0) sd on su.dept_id = sd.dept_id
+        left join (select * from t_sys_user where is_deleted = 0) su1 on su1.user_id = sd.leader
+        ${ew.getCustomSqlSegment}
+    </select>
+    
+    <select id="selectListWithPage" resultMap="BaseResultMapVo">
+        select su.id, su.user_id, su.username, su.nickname, su.email, su.sex, su.birthday, su.phone, su.avatar, su.register_time,
+            su.login_ip, su.login_time, su.user_status, su.status, su.dept_id,
+            sd.dept_name, sd.leader, su1.user_id as leader_name
+        from t_sys_user su
+        left join t_sys_dept sd on su.dept_id = sd.dept_id and sd.is_deleted = 0
+        left join t_sys_user su1 on su1.user_id = sd.leader and su1.is_deleted = 0
+        ${ew.getCustomSqlSegment}
+    </select>
+
+</mapper>

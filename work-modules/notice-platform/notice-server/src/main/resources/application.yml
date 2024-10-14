@@ -1,0 +1,48 @@
+# 项目相关配置
+notice:
+  # 名称
+  name: notice-platform
+  # 版本
+  version: 1.0.0
+  # 版权年份
+  copyrightYear: 2024
+  
+server:
+  port: 9030
+    
+spring:
+  application:
+    name: ${notice.name} # 项目名
+  profiles:
+    active: @profiles.active@ # 运行环境
+
+--- # 监控中心客户端配置
+spring:
+  cloud:
+    nacos:
+      server-addr: @nacos.server@ # Nacos 地址
+      username: @nacos.username@
+      password: @nacos.password@
+      config: # 配置中心
+        file-extension: yaml # 文件后缀名
+        namespace: @nacos.discovery.namespace@ # 命名空间 ID
+        group: @nacos.discovery.group@ # 读取文件所在的组
+
+      discovery: # 服务注册
+        service: ${spring.application.name} # 使用微服务的名称作为注册的服务名称
+        namespace: @nacos.discovery.namespace@ # 命名空间 ID
+        group: @nacos.discovery.group@ # 读取文件所在的组
+  config: # 指定该项目读取配置中心的文件名
+    import:
+      - optional:nacos:application-common.${spring.cloud.nacos.config.file-extension}?refreshEnabled=true
+      #      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+      - optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+      - nacos:datasource.${spring.cloud.nacos.config.file-extension}?refreshEnabled=true
+
+# 日志配置
+logging:
+  level:
+    cn.youngkbt: @logging.level@
+  
+mybatis-plus:
+  scanPackage: cn.youngkbt.notice.system.**.mapper

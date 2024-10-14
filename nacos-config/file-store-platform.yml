@@ -1,0 +1,44 @@
+--- # 数据源配置
+spring.datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: ${datasource.file.url}
+  username: ${datasource.file.username}
+  password: ${datasource.file.password}
+
+# springdoc 配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+  info:
+    title: 文件存储仓库平台
+    description: 专门存储文件的平台
+    version: ${file.version}
+    
+--- # Actuator 监控端点的配置项
+management:
+  endpoints:
+    logfile:
+      external-file: ./logs/${file.name}-error.log # Spring Boot Admin 在线查看日志的路径，与 logback-plus.xml 里生成的文件路径一致，这里取得是 error 的日志
+
+--- # websocket
+websocket:
+  # 如果关闭，需要和前端开关一起关闭
+  enabled: true
+  # 路径
+  path: /file/websocket
+  
+--- # 监控中心配置
+spring.boot.admin.client:
+  # 增加客户端开关
+  enabled: true
+  instance:
+    name: File Store
+    service-host-type: IP
+    
+file:
+  file-store-path: D:\\file-store
+  expire-time: 3650 # 100 年

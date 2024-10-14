@@ -1,0 +1,44 @@
+datasource:
+  master:
+    # jdbc 所有参数配置参考 https://lionli.blog.csdn.net/article/details/122018562
+    # rewriteBatchedStatements=true 批处理优化 大幅提升批量插入更新删除性能
+    url: jdbc:mysql://localhost:330work_uac?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: YoungKbt1234
+  uac:
+    url: jdbc:mysql://localhost:3306/work_uac?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: YoungKbt1234
+  ag:
+    url: jdbc:mysql://localhost:3306/work_ag?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: YoungKbt1234
+  file:
+    url: jdbc:mysql://localhost:3306/work_file?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+    username: root
+    password: YoungKbt1234
+  notice:
+    url: jdbc:mysql://localhost:3306/work_notice?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+    username: root
+    password: YoungKbt1234
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
+    hikari:
+      # 配置获取连接等待超时的时间
+      connectionTimeout: 30000
+      # 校验超时时间
+      validationTimeout: 5000
+      # 空闲连接存活最大时间，默认10分钟
+      idleTimeout: 600000
+      # 多久检查一次连接的活性
+      keepaliveTime: 30000
+      # 最小空闲连接数量 
+      minimum-idle: 5
+      # 连接池最大连接数，默认是 10 
+      maximum-pool-size: 10
+      # 此属性控制池中连接的最长生命周期，值 0 表示无限生命周期，默认 1800000 即 30分钟 
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1

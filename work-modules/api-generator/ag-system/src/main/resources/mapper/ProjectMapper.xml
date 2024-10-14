@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.youngkbt.ag.system.mapper.ProjectMapper">
+
+    <resultMap id="BaseResultMap" type="cn.youngkbt.ag.system.model.po.Project">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+            <result property="baseUrl" column="base_url" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="secretKey" column="secret_key" jdbcType="VARCHAR"/>
+            <result property="dataSourceId" column="data_source_id" jdbcType="VARCHAR" typeHandler="cn.youngkbt.mp.type.ListStringTypeHandler"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createById" column="create_by_id" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateById" column="update_by_id" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+            <result property="teamId" column="team_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        tp.id, tp.project_id, tp.project_name, tp.base_url, tp.description, tp.secret_key, tp.data_source_id, tp.create_by, tp.create_by_id,
+        tp.create_time, tp.update_by, tp.update_by_id, tp.update_time, tp.status, tp.team_id
+    </sql>
+    
+    <select id="listProject" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from t_project tp join t_project_member tpm on tp.project_id = tpm.project_id and tpm.is_deleted = 0
+        ${ew.getCustomSqlSegment}
+    </select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.youngkbt.uac.system.mapper.UserPostLinkMapper">
+
+    <resultMap id="BaseResultMap" type="cn.youngkbt.uac.system.model.po.UserPostLink">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="postId" column="post_id" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createById" column="create_by_id" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateById" column="update_by_id" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+            <result property="tenantId" column="tenant_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,post_id,
+        create_by,create_by_id,create_time,
+        update_by,update_by_id,update_time,
+        status,is_deleted,tenant_id
+    </sql>
+    
+    <select id="listPostByUserId" resultType="cn.youngkbt.uac.system.model.po.SysPost">
+        select * from t_sys_post tsp
+        join t_user_post_link tupl on tsp.post_id = tupl.post_id and tupl.is_deleted = 0
+        ${ew.getCustomSqlSegment}
+    </select>
+</mapper>
