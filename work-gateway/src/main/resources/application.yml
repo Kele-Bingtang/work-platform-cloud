@@ -35,9 +35,7 @@ spring:
   config: # 指定该项目读取配置中心的文件名
     import:
       - optional:nacos:application-common.${spring.cloud.nacos.config.file-extension}?refreshEnabled=true
-      #      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
       - optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
-      - nacos:datasource.${spring.cloud.nacos.config.file-extension}?refreshEnabled=true
 
 # 日志配置
 logging:
