@@ -17,6 +17,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 /**
  * @author Kele-Bingtang
  * @date 2024/10/15 20:39:05
@@ -35,7 +37,7 @@ public class GlobalLogFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 如果不开启日志功能
-        if (!logProperties.getEnabled()) {
+        if (Objects.isNull(logProperties.getEnabled()) || !logProperties.getEnabled()) {
             return chain.filter(exchange);
         }
 

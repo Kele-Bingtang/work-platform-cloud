@@ -28,25 +28,25 @@ spring:
         - id: uac-platform
           uri: lb://uac-platform
           predicates:
-            - Path=/auth/**
+            - Path=/uac/**
           filters:
             - StripPrefix=1
         - id: api-generator-platform
           uri: lb://api-generator-platform
           predicates:
-            - Path=/tool/**
+            - Path=/ag/**
           filters:
             - StripPrefix=1
         - id: file-store-platform
           uri: lb://file-store-platform
           predicates:
-            - Path=/system/**,/monitor/**
+            - Path=/file/**,/monitor/**
           filters:
             - StripPrefix=1
         - id: notice-platform
           uri: lb://notice-platform
           predicates:
-            - Path=/resource/**
+            - Path=/notice/**
           filters:
             - StripPrefix=1
 
@@ -62,7 +62,7 @@ spring:
         fallback:
           mode: response # 指定降级处理的模式为返回响应
           response-status: 200
-          response-body: '{ "code": 10001, "message": "服务忙请稍后再试", "data": null }
+          response-body: '{ "code": 10001, "message": "服务忙请稍后再试", "data": null }'
       # nacos 配置持久化
       datasource:
         ds:

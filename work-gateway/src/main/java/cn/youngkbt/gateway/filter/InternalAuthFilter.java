@@ -19,7 +19,7 @@ public class InternalAuthFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String simpleUUID = IdsUtil.simpleUUID();
-        ServerHttpRequest httpRequest = exchange.getRequest().mutate().header("Authorization", simpleUUID).build();
+        ServerHttpRequest httpRequest = exchange.getRequest().mutate().header("gateway-token", simpleUUID).build();
         // 将 simpleUUID 存入 Redis，内网服务先进行校验
 
         return chain.filter(exchange.mutate().request(httpRequest).build());

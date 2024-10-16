@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 /**
  * @author Kele-Bingtang
  * @date 2024/10/15 20:10:45
- * @note
+ * @note 统一异常处理
  */
 @Slf4j
 @Order(-1)
@@ -39,7 +39,7 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
             msg = "内部服务器错误";
         }
 
-        log.error("「网关异常处理」请求路径：{},异常信息：{}", exchange.getRequest().getPath(), ex.getMessage());
+        log.error("「网关异常处理」请求路径：{}，异常信息：{}", exchange.getRequest().getPath(), ex.getMessage());
 
         return GatewayHelper.responseWriter(response, msg);
     }

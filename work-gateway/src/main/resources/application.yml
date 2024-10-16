@@ -8,7 +8,7 @@ gateway:
   copyrightYear: 2023
 
 server:
-  port: 9000
+  port: 8090
 
 spring:
   application:
