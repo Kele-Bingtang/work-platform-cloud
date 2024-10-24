@@ -16,13 +16,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
+import java.util.LinkedHashSet;
 import java.util.function.Function;
+
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR;
 
 /**
  * @author Kele-Bingtang
@@ -36,8 +39,9 @@ public class GatewayHelper {
      */
     public static String getOriginalRequestUrl(ServerWebExchange exchange) {
         ServerHttpRequest request = exchange.getRequest();
-        URI uri = (URI) Optional.ofNullable(exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR)).orElse(request.getURI());
-        return uri.toString();
+        LinkedHashSet<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, new LinkedHashSet<>());
+        URI requestUri = uris.stream().findFirst().orElse(request.getURI());
+        return UriComponentsBuilder.fromPath(requestUri.getRawPath()).build().toUriString();
     }
 
     /**

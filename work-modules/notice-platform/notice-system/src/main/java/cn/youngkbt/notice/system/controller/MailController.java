@@ -8,8 +8,8 @@ import cn.youngkbt.notice.system.model.vo.NoticeInfoVO;
 import cn.youngkbt.notice.system.service.MailService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,15 +25,15 @@ public class MailController {
 
     private final MailService mailService;
 
-    @GetMapping
+    @PostMapping
     @Operation(summary = "发送邮件", description = "发送邮件（不支持附件）")
     @AppAuthorize("#noticeInfoDTO.getAppId()")
-    public Response<NoticeInfoVO> sendMail(NoticeInfoDTO noticeInfoDTO) {
+    public Response<NoticeInfoVO> sendMail(@RequestBody NoticeInfoDTO noticeInfoDTO) {
         NoticeInfoVO noticeVO = mailService.sendMail(noticeInfoDTO);
         return HttpResult.ok(noticeVO);
     }
 
-    @PostMapping
+    @PostMapping("/file")
     @Operation(summary = "发送邮件", description = "发送邮件（支持附件）")
     @AppAuthorize("#noticeInfoDTO.getAppId()")
     public Response<NoticeInfoVO> sendMailWithFile(NoticeInfoDTO noticeInfoDTO) {

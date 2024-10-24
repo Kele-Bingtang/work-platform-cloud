@@ -7,6 +7,7 @@ import org.springframework.boot.context.metrics.buffering.BufferingApplicationSt
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Bean;
  * @note
  */
 @SpringBootApplication(scanBasePackages = "cn.youngkbt.uac")
+@EnableFeignClients
 public class UacMainApplication {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(UacMainApplication.class);

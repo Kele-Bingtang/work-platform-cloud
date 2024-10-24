@@ -44,7 +44,7 @@ public class GlobalLogFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         // 获取请求 URI
         String originalRequestUrl = GatewayHelper.getOriginalRequestUrl(exchange);
-        String url = request.getMethod().name() + " | " + originalRequestUrl;
+        String url = request.getMethod().name() + " => " + originalRequestUrl;
 
         // 打印日志
         printLog(exchange, url);
@@ -55,7 +55,7 @@ public class GlobalLogFilter implements GlobalFilter, Ordered {
             Long startTime = exchange.getAttribute(START_TIME);
             if (startTime != null) {
                 long executeTime = (System.currentTimeMillis() - startTime);
-                log.info("结束请求，URL「{}」，耗时「{}」毫秒", url, executeTime);
+                log.info("结束请求，Method & URL：{}，耗时 {} 毫秒", url, executeTime);
             }
         }));
     }
@@ -70,19 +70,19 @@ public class GlobalLogFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         // 打印请求参数
         if (GatewayHelper.isJsonRequest(exchange)) {
-            if (apiDecryptProperties.getEnabled() && ObjectUtil.isNotNull(request.getHeaders().getFirst(apiDecryptProperties.getHeaderFlag()))) {
-                log.info("开始请求 => URL「{}」,参数类型【encrypt】", url);
+            if (Boolean.TRUE.equals(apiDecryptProperties.getEnabled()) && ObjectUtil.isNotNull(request.getHeaders().getFirst(apiDecryptProperties.getHeaderFlag()))) {
+                log.info("开始请求 => Method & URL：{},参数类型【encrypt】", url);
             } else {
                 String jsonParam = GatewayHelper.resolveBodyFromCacheRequest(exchange);
-                log.info("开始请求，URL「{}」，参数类型【json】，参数:「{}」", url, jsonParam);
+                log.info("开始请求，Method & URL：{}，参数类型【json】，参数:「{}」", url, jsonParam);
             }
         } else {
             MultiValueMap<String, String> parameterMap = request.getQueryParams();
             if (MapUtil.isNotEmpty(parameterMap)) {
                 String parameters = JacksonUtil.toJsonStr(parameterMap);
-                log.info("开始请求，URL「{}」，参数类型【param】，参数:「{}」", url, parameters);
+                log.info("开始请求，Method & URL：{}，参数类型【param】，参数:{}", url, parameters);
             } else {
-                log.info("开始请求，URL「{}」，无参数", url);
+                log.info("开始请求，Method & URL：{}，无参数", url);
             }
         }
     }
