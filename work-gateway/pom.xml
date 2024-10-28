@@ -39,8 +39,9 @@
             <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <groupId>cn.youngkbt</groupId>
+            <artifactId>work-common-sentinel</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>cn.youngkbt</groupId>

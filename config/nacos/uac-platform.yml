@@ -18,6 +18,20 @@ spring.boot.admin.client:
     name: UAC Platform
     service-host-type: IP
 
+spring.cloud:
+  sentinel:
+    datasource:
+      flow-rule:
+        nacos:
+          server-addr: ${spring.cloud.nacos.server-addr}
+          username: ${spring.cloud.nacos.username}
+          password: ${spring.cloud.nacos.password}
+          group-id: ${spring.cloud.nacos.config.group}
+          namespace: ${spring.cloud.nacos.config.namespace}
+          data-id: ${spring.application.name}-flow-rules.json
+          data-type: json
+          rule-type: flow
+
 # security 配置
 security:
   enabled: true

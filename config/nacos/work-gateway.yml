@@ -22,6 +22,8 @@ spring:
   cloud:
     # 网关配置
     gateway:
+      default-filters:
+        - AddRequestHeader=origin,gateway
       discovery:
         locator:
           lowerCaseServiceId: true
@@ -57,24 +59,22 @@ spring:
       filter:
         enabled: true
       eager: true
-      transport:
-        port: 8719
-        dashboard: localhost:18080
       scg: # 针对 Spring Cloud Gateway 限流后的相应配置
         fallback:
           mode: response # 指定降级处理的模式为返回响应
           response-status: 200
           response-body: '{ "code": 10001, "message": "服务忙请稍后再试", "data": null }'
+      globalException: false # 取消 work-common-sentinel 开启自定义异常处理器，使用上面 scg 的 fallback 处理器
       # nacos 配置持久化
       datasource:
-        ds:
+        flow-rule:
           nacos:
             server-addr: ${spring.cloud.nacos.server-addr}
-            groupId: ${spring.cloud.nacos.config.group}
             username: ${spring.cloud.nacos.username}
             password: ${spring.cloud.nacos.password}
-            namespace: ${spring.profiles.active}
-            #            dataId: sentinel-${spring.application.name}.json
+            group-id: ${spring.cloud.nacos.config.group}
+            namespace: ${spring.cloud.nacos.config.namespace}
+            data-id: sentinel-${spring.application.name}-flow-rule.json
             data-type: json
-            rule-type: gw-flow
+            rule-type: flow
          

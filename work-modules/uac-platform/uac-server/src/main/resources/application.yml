@@ -32,6 +32,10 @@ spring:
         service: ${spring.application.name} # 使用微服务的名称作为注册的服务名称
         namespace: @nacos.discovery.namespace@ # 命名空间 ID
         group: @nacos.discovery.group@ # 读取文件所在的组
+    sentinel:
+      transport:
+        dashboard: @sentinel.server@ # 控制台地址
+      origin: true
   config: # 指定该项目读取配置中心的文件名
     import:
       - optional:nacos:application-common.${spring.cloud.nacos.config.file-extension}?refreshEnabled=true
