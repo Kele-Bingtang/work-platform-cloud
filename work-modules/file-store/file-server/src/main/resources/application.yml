@@ -35,6 +35,10 @@ spring:
         service: ${spring.application.name} # 使用微服务的名称作为注册的服务名称
         namespace: @nacos.discovery.namespace@ # 命名空间 ID
         group: @nacos.discovery.group@ # 读取文件所在的组
+    sentinel:
+      transport:
+        dashboard: @sentinel.server@ # 控制台地址
+      origin: true # 开启请求头的 origin 键值判断规则.前提需要在 Sentinel 添加授权规则，只有携带 origin 键值才能访问项目（用拦截内网访问，只能经过网关，网关统一加入 origin 键值，如 origin: gateway 且 Sentinel 授权规则也指定 gateway，两者匹配则允许访问项目）
   config: # 指定该项目读取配置中心的文件名
     import:
       - optional:nacos:application-common.${spring.cloud.nacos.config.file-extension}?refreshEnabled=true

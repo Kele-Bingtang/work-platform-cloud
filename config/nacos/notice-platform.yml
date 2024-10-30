@@ -4,7 +4,22 @@ spring.datasource:
   url: ${datasource.notice.url}
   username: ${datasource.notice.username}
   password: ${datasource.notice.password}
-  
+
+
+spring.cloud:
+  sentinel:
+    datasource:
+      flow-rule:
+        nacos:
+          server-addr: ${spring.cloud.nacos.server-addr}
+          username: ${spring.cloud.nacos.username}
+          password: ${spring.cloud.nacos.password}
+          group-id: ${spring.cloud.nacos.config.group}
+          namespace: ${spring.cloud.nacos.config.namespace}
+          data-id: ${spring.application.name}-flow-rules.json
+          data-type: json
+          rule-type: flow
+
 # springdoc 配置
 springdoc:
   api-docs:
@@ -17,7 +32,7 @@ springdoc:
     title: 消息发送平台
     description: 消息发送平台
     version: ${notice.version}
-    
+  
 --- # Actuator 监控端点的配置项
 management:
   endpoints:
