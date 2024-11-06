@@ -1,6 +1,5 @@
 package cn.youngkbt.sentinel.exception;
 
-import cn.youngkbt.utils.WebUtil;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc_v6x.callback.BlockExceptionHandler;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityException;
@@ -36,6 +35,9 @@ public class SentinelExceptionHandler implements BlockExceptionHandler {
         }
 
         long epochMilli = Instant.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        WebUtil.renderString(response, "{\"code\": " + 200 + ", \"message\": " + message + ", \"status\": \"success\", \"data\": null, \"timeStamp\": " + epochMilli + "}", status);
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().print("{\"code\": " + 200 + ", \"message\": " + message + ", \"status\": \"success\", \"data\": null, \"timeStamp\": " + epochMilli + "}");
     }
 }

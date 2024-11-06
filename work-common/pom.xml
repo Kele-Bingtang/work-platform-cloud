@@ -32,6 +32,7 @@
         <module>work-common-cache</module>
         <module>work-common-sentinel</module>
         <module>work-common-bom</module>
+        <module>work-common-web</module>
     </modules>
 
     <properties>
