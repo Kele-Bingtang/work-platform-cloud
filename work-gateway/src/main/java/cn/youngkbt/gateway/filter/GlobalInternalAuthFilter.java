@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
  * @note 转发认证全局过滤器(内部服务隔离)。原理：拦截请求，在请求头中添加 一个随机字符串，通过 Redis 存储，下游服务从 Redis 获取进行验证。
  */
 @Component
-public class InternalAuthFilter implements GlobalFilter, Ordered {
+public class GlobalInternalAuthFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String simpleUUID = IdsUtil.simpleUUID();

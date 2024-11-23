@@ -167,7 +167,7 @@
     </springProfile>
 
     <!-- 生产环境 -->
-    <springProfile name="pro">
+    <springProfile name="prod">
         <logger name="cn.youngkbt" level="debug"/>
         <logger name="org.springframework.web" level="warn"/>
         <root level="info">
